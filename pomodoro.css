@@ -1,0 +1,116 @@
+body {
+    display: block;
+}
+
+h1 {
+    margin-left: 480px;
+}
+
+#start {
+    content: \25BA;
+}
+
+button {
+    padding: 10px 15px;
+
+}
+
+.top {
+    margin: 20px 350px;
+    margin-top: 20px;
+    margin-right: 250px;
+    padding: 30px 140px;
+    background-color: black;
+    display: flex;
+    color: rgb(68, 60, 60);
+    float: left;
+    border-radius: 15px;
+}
+
+.work {
+    display: inline;
+    display: flex;
+    margin-inline-start: 0px;       /*margin-inline & margin-block required to put buttons side-by-side for inline elements */
+    margin-inline-end: 0px;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    display: block;
+    color: white;
+}
+
+.work button {
+    background: black;
+    border: solid 1px white;
+    border-radius: 5px;
+    color: white;
+}
+
+.rest button {
+    background: black;
+    border: solid 1px white;
+    border-radius: 5px;
+    color: white;
+}
+
+#workDisp {
+    margin-left: 30px;
+    font-size: 20px;
+}
+
+#restDisp {
+    margin-left: 35px;
+    font-size: 20px;
+}
+
+.rest {
+    display: inline;
+    display: flex;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-left: 100px;
+    display: block;
+    color: white;
+}
+
+.bottom {
+    margin-top: 15px;
+}
+
+.timeDisp {
+    margin-top: 200px;
+    margin-right: 460px;
+    margin-left: 350px;
+    background: black;
+    color: white;
+    align-content: center;
+    padding: 30px 60px;
+    padding-bottom: 80px;
+    flex: left;
+    font-size: 100px;
+    border-radius: 20px;
+}
+
+#display {
+    margin-left: 100px;
+}
+
+.bottom {
+    margin: 5px 350px;
+    margin-right: 460px;
+    padding: 20px 50px;
+    background: black;
+    color: white;
+    border-radius: 15px;
+}
+
+#start {
+    margin-left: 120px;
+}
+
+.bottom button {
+    background: black;
+    color: white;
+    border: solid 1px white;
+}

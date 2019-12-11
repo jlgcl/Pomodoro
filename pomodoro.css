@@ -93,7 +93,7 @@ button {
 }
 
 #display {
-    margin-left: 100px;
+    margin-left: 20px;  /* change back to 100px */
 }
 
 .bottom {

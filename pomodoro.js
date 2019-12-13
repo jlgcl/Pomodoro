@@ -11,12 +11,15 @@ METHODS/APPROACH:
         - performs function iteratively; repeats execution.
 
 LEARNED:
+    - setInterval() & clearInterval()
 
 STATUS:
     - update display time depending on workDisp input - COMPLETED
     - countdown from existing disp value. - COMPLETED
-    - start/stop/refresh
-    - after disp value is done, replace the value with rest disp.
+    - start/stop/refresh - COMPLETED
+    - after disp value is done, replace the value with rest disp. - COMPLETED
+        - must ensure that the ending display is "00:00", not "00:0"
+    - display :00 when work display is lower than 10.
 
 */
 
@@ -67,7 +70,7 @@ function setClock() {
 
     start.addEventListener("click", function() {
         
-        setInterval(function() {
+        var intervali = setInterval(function() {
         
             let timeA = disp.textContent.split("");                //['2', '5', ':', '0', '0']; ['2', '5', ':', '5', '9'] NOT: ['2', '5', ':', '59']
             //STATUS BOOKMARK1 (COMPLETED): splitting in to 4 arrays again; we must make it so that we are passing "59", not "5", "9"
@@ -78,8 +81,17 @@ function setClock() {
                 return parseInt(x);
             })                          
             timeB.splice(1, 1, ":");                                //[25, ":", 00] 
-            console.log(timeB)
         
+            //display "00:00", not "00:0" manually...(too bad)
+            if (timeB[2] <= 10 && timeB[2] > 0) {   //when timeB[2] == 0, [xx, ":", 00] is passed through so no need for adding ":0"
+                timeB.splice(1, 1, ":0");
+            }
+
+            //display "00:00", not "0"
+            if (timeB[1] <= 10) {
+                timeB.splice(1, 1, ":00");
+            }
+
             if (timeB[2] == 0) {
                 timeB[2] = 59;
                 timeB[0] = timeB[0] - 1;
@@ -93,13 +105,24 @@ function setClock() {
                 //console.log(timeB);
             }
 
-        },1000)
+            //IMPORTANT: code to replace to rest display must be here because display must countdown through interval function.
+            if (disp.textContent == "0:00") {
+                disp.textContent = restDisp.textContent + ":00";
+            }
+
+        },100)
+
+        //pause the time; NOTE: can't put this eventlistener outside of the current one because "intervali" can't be passed outside.
+        pause.addEventListener("click", function(){
+            clearInterval(intervali);
+        })
     })
 
-    pause.addEventListener("click", function() {
-        disp.textContent = timeB.join("");
-        //STATUS BOOKMARK2: pause the display.
+    //restart display
+    restart.addEventListener("click", function() {
+        disp.textContent = workDisp.textContent + ":00";
     })
+
 
 }
 

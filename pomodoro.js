@@ -12,6 +12,7 @@ METHODS/APPROACH:
 
 LEARNED:
     - setInterval() & clearInterval()
+    - use placeholder workArr & restArr keep track of time so display can reset after each round is over.
 
 STATUS:
     - update display time depending on workDisp input - COMPLETED
@@ -19,7 +20,9 @@ STATUS:
     - start/stop/refresh - COMPLETED
     - after disp value is done, replace the value with rest disp. - COMPLETED
         - must ensure that the ending display is "00:00", not "00:0"
-    - display :00 when work display is lower than 10.
+    - display :00 when work display is lower than 10. - COMPLETED
+    - after rest disp. is done, replace with work disp, vice-versa. - COMPLETED; TRICKY - SEE BELOW FOR LEARNED LESSONS
+    - allow only positive numbers for workDisp & restDisp. - COMPLETED
 
 */
 
@@ -39,20 +42,24 @@ function setClock() {
     
     let timeWd = 0;
     let timeRd = 0;
-    let newStr = "";
+    //let newStr = "";
 
     workI.addEventListener("click", function() {
         timeWd = parseInt(workDisp.textContent);
         workDisp.textContent = timeWd + 1;
-        newStr = workDisp.textContent;
-        disp.textContent = workDisp.textContent.replace(/[^0]\w/m, newStr+":00");
+        //newStr = workDisp.textContent;
+        //disp.textContent = workDisp.textContent.replace(/[^0]\w/m, newStr+":00"); - WHY THE HELL WOULD I USE THIS?
+        disp.textContent = workDisp.textContent + ":00";
     })
-
+    
     workD.addEventListener("click", function() {
-        timeWd = parseInt(workDisp.textContent);
-        workDisp.textContent = timeWd - 1;
-        newStr = workDisp.textContent;
-        disp.textContent = workDisp.textContent.replace(/[^0]\w/m, newStr+":00");
+        timeWd = parseInt(workDisp.textContent);            //5
+        if (timeWd > 1) {
+            workDisp.textContent = timeWd - 1;                  //4
+            //newStr = workDisp.textContent;                      //4
+            //disp.textContent = workDisp.textContent.replace(/[^0]\w/m, newStr+":00");      
+            disp.textContent = workDisp.textContent + ":00";
+        }
     })
 
     restI.addEventListener("click", function() {
@@ -62,14 +69,21 @@ function setClock() {
 
     restD.addEventListener("click", function() {
         timeRd = parseInt(restDisp.textContent);
-        restDisp.textContent = timeRd - 1;
+        if (timeRd > 1){
+            restDisp.textContent = timeRd - 1;
+        }
     })
 
 
     let timeB = [];
+    let restArr = [];
+    let workArr = [];
 
     start.addEventListener("click", function() {
         
+        workArr[0] = parseInt(workDisp.textContent) * 60;
+        restArr[0] = parseInt(restDisp.textContent) * 60;
+
         var intervali = setInterval(function() {
         
             let timeA = disp.textContent.split("");                //['2', '5', ':', '0', '0']; ['2', '5', ':', '5', '9'] NOT: ['2', '5', ':', '59']
@@ -105,12 +119,25 @@ function setClock() {
                 //console.log(timeB);
             }
 
-            //IMPORTANT: code to replace to rest display must be here because display must countdown through interval function.
-            if (disp.textContent == "0:00") {
+            /*IMPORTANT: code to replace to rest display must be here because display must countdown through interval function.
+              LEARNED: initialize workArr[0] & restArr[0] outside this interval function. decrement inside the interval, then reset
+              the array values when the other array == 0. workArr & restArr are placeholder to keep track of each time; when disp is
+              workArr, decrement each interval and when = 0, reset restArr to restDisp value, then decrement both until restArr = 0.
+            */
+            workArr[0] = workArr[0] - 1;
+            restArr[0] = restArr[0] - 1;
+
+            if (disp.textContent == "0:00" && workArr[0] == 0) {
+                workArr[0] = parseInt(workDisp.textContent);
                 disp.textContent = restDisp.textContent + ":00";
+                restArr[0] = parseInt(restDisp.textContent)* 60;
+            } else if (disp.textContent == "0:00" && restArr[0] == 0){
+                disp.textContent = workDisp.textContent + ":00";
+                workArr[0] = parseInt(workDisp.textContent) * 60;
+                //workArr[0] = workArr[0] - 1;
             }
 
-        },100)
+        }, 1000)
 
         //pause the time; NOTE: can't put this eventlistener outside of the current one because "intervali" can't be passed outside.
         pause.addEventListener("click", function(){
@@ -122,7 +149,6 @@ function setClock() {
     restart.addEventListener("click", function() {
         disp.textContent = workDisp.textContent + ":00";
     })
-
 
 }
 
